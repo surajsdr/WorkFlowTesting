@@ -1,0 +1,22 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Conftest
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    branches: 
+      - main
+
+jobs:
+  conftest:
+    runs-on: ubuntu-latest
+#    env:
+#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+    container: openpolicyagent/conftest:latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v2
+      - name: Validate Kubernetes policy
+        run: |
+          conftest test -o github -p kubernetes/policy kubernetes/deployment.yaml
